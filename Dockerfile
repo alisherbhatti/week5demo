@@ -1,22 +1,22 @@
-# Step 1: Set the base image to Python 3.9
+# Use official python base image
 FROM python:3.9-slim
 
-# Step 2: Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Step 3: Copy the requirements.txt to the container and install dependencies
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+# Copy requirements, install dependencies
+COPY requirements.txt .
 
-# Step 4: Copy the entire application to the container
-COPY . /app
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Step 5: Expose the port that Flask runs on (default is 5000)
+# Copy application code
+COPY . .
+
+# Expose Flask default port
 EXPOSE 5000
 
-# Step 6: Set the environment variable for Flask (optional, for production use)
+# If your app uses FLASK_APP env var:
 ENV FLASK_APP=app.py
-ENV FLASK_ENV=production
 
-# Step 7: Set the command to run the Flask app
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+# Start the app (adjust if your entrypoint is different)
+CMD ["python", "app.py"]
